@@ -1,0 +1,26 @@
+#!/bin/bash
+
+ICON_DIR="$HOME/.local/share/applications/icons"
+DESKTOP_DIR="$HOME/.local/share/applications/"
+
+if [ "$#" -eq 0 ]; then
+  while IFS= read -r -d '' file; do
+    if grep -q '^Exec=.*launch-webapp' "$file"; then
+      WEB_APPS+=("$(basename "${file%.desktop}")")
+    fi
+  done < <(find "$DESKTOP_DIR" -name '*.desktop' -print0)
+
+  if ((${#WEB_APPS[@]})); then
+    IFS=$'\n' SORTED=($(sort <<<"${WEB_APPS[*]}"))
+    APP=$(gum choose "${SORTED[@]}")
+  else
+    echo "No web apps installed."
+    exit 0
+  fi
+else
+  APP="$1"
+fi
+
+rm -f "$DESKTOP_DIR/$APP.desktop"
+rm -f "$ICON_DIR/$APP.png"
+echo "Removed $APP"
