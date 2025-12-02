@@ -1,4 +1,4 @@
-# Samantha’s Dotfiles
+# Dotfiles
 
 A fully symlinked, portable Arch Linux + Hyprland environment.
 This repo contains all configuration needed to reproduce my desktop setup on any machine.
